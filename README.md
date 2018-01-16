@@ -1,2 +1,14 @@
 # Gaze-Glasses
+
+## Background
 As technologies develop for acquiring gaze behavior in real world social settings, robust methods are needed that minimize the time required for a trained observer to code behaviors. We record gaze behavior from asubjectwearingeye-trackingglassesduringanaturalistic interaction with three other people, with multiple objects that are referred to or manipulated during the interaction. The resulting gaze-in-world video from each interaction can be manually coded for different behaviors, but this processrequirestrainedbehavioralcodersandisextremely time-consuming. Instead, we use a neural network to detect objects, and a Viola-Jones framework with feature tracking to detect faces. The time sequence of events when the gaze lands within the object/face bounding boxes is processed for run lengths to determine “looks”, and we discuss optimization of run length parameters. The performance of the algorithm is compared against a bounding box ground truth and an expert holistic ground truth
+
+
+
+## System Overview
+presents an overview of the system operation and the formation of the different types of ground truth (GT). The Pupil Labs eye-tracking glasses (Pupil Pro) produce raw video frames (24-bit color, 720 × 1280, 60Hz) from the world-view camera and raw gaze position data at 120Hz from the eye camera. The gaze data is downsampledtothevideoframerate.World-viewframes are input separately to object and face detection modules, whose outputs are sets of bounding boxes, intended to bound faces and objects within the chosen set of objects. Next, the hitscan algorithm inputs a bounding box and gaze position, and puts out a binary result of whether the gaze position is inside the bounding box (a “hit”). The runlength algorithm processes these binary values to determine the presence and duration of a “look” to an object or face; a minimum runlength of hits is required to declare a look, and a gap in the hits above another threshold value determines the end of that look.
+
+
+	
+The lighter gray rectangles in Figure 1 depict the formation of the two GTs for looks. In one approach, humans mark bounding boxes for each object/face in each frame, without gaze position shown. These boxes and the gaze position are then passed through the hitscan and runlength algorithms to determine looks, referred to as GT-B looks. In the second approach (GT-E looks), an expert clinical neuroscientist directly labels looks by reviewing the video with superimposed gaze position in a holistic way that would be used in clinical practice. In the ﬁgure, the three vertical gray arrows show points at whichthealgorithmperformanceisevaluated.Algorithm bounding boxes are compared against the boxes marked by humans, and algorithm-deﬁned looks are compared against GT-B and GT-E Looks.
+
